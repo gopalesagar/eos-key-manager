@@ -46,9 +46,15 @@ class SignMessageForm extends Component {
 
         // TODO: Add public keys to state
         const decryptedData = await Promise.all(decryptionPromises);
-        console.log('DECRYPTED DATA: ', decryptedData);
 
-        const signature = await signMessage(this.state.message, decryptedData[this.state.publicKey]);
+        //TODO: Update to logic to something better
+        let privateKey = '';
+        decryptedData.forEach(dd => {
+            const current = dd[this.state.publicKey]
+            if(current) privateKey = current;
+        })
+        console.log('{RIVATE: ', privateKey);
+        const signature = await signMessage(this.state.message, privateKey);
         console.log('SIGNATURE:', signature);
         
         await this.toggleLoader();

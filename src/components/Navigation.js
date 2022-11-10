@@ -1,14 +1,19 @@
 import React from 'react';
-
-import { NavLink } from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
 
 const Navigation = () => {
     return (
-        <div>
-            <NavLink to="/">Generate Keys</NavLink>
-            <NavLink to="/sign">Sign Message</NavLink>
-            <NavLink to="/recover">Recover Public Key</NavLink>
-        </div>
+        <Nav className="justify-content-center" activeKey="/">
+            <Nav.Item>
+                <Nav.Link href="/">Home</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link href="/sign">Sign Message</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+                <Nav.Link href="/recover">Recover Public Key</Nav.Link>
+            </Nav.Item>
+        </Nav>
     );
 }
 

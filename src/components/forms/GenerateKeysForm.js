@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import { PrivateKey, PublicKey, Signature, Aes, key_utils, config } from 'eosjs-ecc';
-
-import Form from 'react-bootstrap/Form';
+import { Button, Container, ListGroup, Form, Spinner, Row, Col } from 'react-bootstrap';
+import { constants, saveData, getEncrypted, getPublicKeyFromPrivate, generatePrivateKey, clearData } from '../../utils';
 
 export class GenerateKeysForm extends Component {
 
@@ -12,38 +9,68 @@ export class GenerateKeysForm extends Component {
 
         this.state = {
             pincode: "",
-            publicKeys: []
+            publicKeys: [],
+            isSubmitting: false
         }
     }
 
-    handlePincode = event => {
+    handlePincodeInput = event => {
         this.setState({
             pincode: event.target.value
         });
     }
 
-    handleSubmit = async (event) => {
-        event.preventDefault();
-        alert(`Pincode: ${this.state.pincode}`);
-        const privateKey = await PrivateKey.randomKey()
-        let privateString = privateKey.toString();
-        let pubkey = PrivateKey.fromString(privateString).toPublic().toString();
-        const publicKeys = this.state.publicKeys;
-        this.setState({
-            publicKeys: 
-        })
+    toggleLoader = async () => {
+        const status = this.state.isSubmitting ? false : true;
+        this.setState({ isSubmitting: status });
     }
 
+
+    handleSubmit = async (event) => {
+        let publicKey;
+        let publicKeys = [];
+
+        event.preventDefault();
+        await this.toggleLoader();
+        await clearData();
+        const encryptionPromises = [];
+        for(let i = 1; i <= constants.NUMBER_OF_KEYS; i++) {
+            const privateKeyString = await generatePrivateKey();
+            publicKey = await getPublicKeyFromPrivate(privateKeyString);
+
+            encryptionPromises.push(await getEncrypted(publicKey, privateKeyString, this.state.pincode));
+
+            publicKeys = this.state.publicKeys;
+            publicKeys.push(publicKey);
+        }
+        const encryptedKeysResponse = await Promise.all(encryptionPromises);
+
+        // TODO: Store encryptedKeysResponse somewhere
+        await saveData('object', encryptedKeysResponse);
+        this.setState({ publicKeys });
+        await this.toggleLoader();
+    }
+    
     render() {
         return (
-            <Container>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group className="mb-6" controlId="generateKeysForm">
-                        <Form.Label>Pincode: </Form.Label>
-                        <Form.Control value={this.state.pincode} onChange={this.handlePincode}></Form.Control>
+            <Container style={{ display: 'block', width: 700, padding: 30 }}>
+                <Form onSubmit={this.handleSubmit} id="generateEncryptionKeyForm">
+                    <Form.Group className="mb-6">
+                        <Row>
+                            <Col><Form.Label>Pincode: </Form.Label></Col>
+                            <Col><Form.Control required placeholder="Enter a code for encryption" value={this.state.pincode} onChange={this.handlePincodeInput}></Form.Control></Col>
+                        </Row><br/>
+                        <Row>
+                            <Col><Button variant="outline-primary" size="sm" type="submit">Generate & Encrypt</Button></Col>
+                        </Row><br/>
+                        <Row>
+                            <Col>{this.state.isSubmitting && ( <Spinner animation="grow" element="generateEncryptionKeyForm"></Spinner> )}</Col>
+                        </Row>
                     </Form.Group>
-                    <Button variant="outline-primary" type="submit">Generate</Button>
                 </Form>
+                <ListGroup>
+                    {this.state.publicKeys.map(pk => <ListGroup.Item key={pk}>{pk}</ListGroup.Item>)}
+                </ListGroup>
             </Container>
         )
     }

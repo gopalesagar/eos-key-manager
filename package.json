@@ -16,6 +16,9 @@
     "react-secure-storage": "^1.0.21",
     "web-vitals": "^2.1.4"
   },
+  "engines": {
+    "node": "16.15.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "set GENERATE_SOURCEMAP=false && react-scripts build",

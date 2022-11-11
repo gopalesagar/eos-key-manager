@@ -1,10 +1,10 @@
 import React from 'react';
- 
+import RecoverPublicKeyForm from './forms/RecoverPublicKeyForm';
+
 const RecoverPublicKey = () => {
     return (
        <div>
-          <h1>Recover Public Key</h1>
-          <p>Get your public key here</p>
+          <RecoverPublicKeyForm />
        </div>
     );
 }

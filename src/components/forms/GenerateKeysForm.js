@@ -1,23 +1,24 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { Button, Container, ListGroup, Form, Spinner, Row, Col } from 'react-bootstrap';
 import { constants, saveData, getEncrypted, getPublicKeyFromPrivate, generatePrivateKey, clearData } from '../../utils';
 
-export class GenerateKeysForm extends Component {
+class GenerateKeysForm extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            pincode: "",
+            pincode: '',
             publicKeys: [],
-            isSubmitting: false
+            isSubmitting: false,
+            responseMessage: ''
         }
     }
 
-    handlePincodeInput = event => {
-        this.setState({
-            pincode: event.target.value
-        });
+    handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        this.setState({[name]: value});
     }
 
     toggleLoader = async () => {
@@ -25,46 +26,55 @@ export class GenerateKeysForm extends Component {
         this.setState({ isSubmitting: status });
     }
 
+    clearExistingData = async () => {
+        await clearData();
+        this.setState({ publicKeys: [] });
+    }
 
     handleSubmit = async (event) => {
-        let publicKey;
-        let publicKeys = [];
+        try {
+            let publicKey;
+            let publicKeys = [];
 
-        event.preventDefault();
-        await this.toggleLoader();
-        await clearData();
-        const encryptionPromises = [];
-        for(let i = 1; i <= constants.NUMBER_OF_KEYS; i++) {
-            const privateKeyString = await generatePrivateKey();
-            publicKey = await getPublicKeyFromPrivate(privateKeyString);
+            event.preventDefault();
+            await this.toggleLoader();
+            await this.clearExistingData();
 
-            encryptionPromises.push(await getEncrypted(publicKey, privateKeyString, this.state.pincode));
+            const encryptionPromises = [];
+            for(let i = 1; i <= constants.NUMBER_OF_KEYS; i++) {
+                const privateKeyString = await generatePrivateKey();
+                publicKey = await getPublicKeyFromPrivate(privateKeyString);
+                encryptionPromises.push(await getEncrypted(publicKey, privateKeyString, this.state.pincode));
+                publicKeys.push(publicKey);
+            }
+            const encryptedKeysResponse = await Promise.all(encryptionPromises);
 
-            publicKeys = this.state.publicKeys;
-            publicKeys.push(publicKey);
+            // TODO: Store encryptedKeysResponse somewhere
+            await saveData('object', encryptedKeysResponse);
+            this.setState({ publicKeys, responseMessage: "Keys generated successfully!" });
+        } catch (error) {
+            this.setState({ responseMessage: error.message })
+        } finally {
+            await this.toggleLoader();
         }
-        const encryptedKeysResponse = await Promise.all(encryptionPromises);
-
-        // TODO: Store encryptedKeysResponse somewhere
-        await saveData('object', encryptedKeysResponse);
-        this.setState({ publicKeys });
-        await this.toggleLoader();
     }
     
     render() {
         return (
-            <Container style={{ display: 'block', width: 700, padding: 30 }}>
+            <Container data-testid='generateKeysFormContainer' style={{ display: 'block', width: 800, padding: 100 }}>
                 <Form onSubmit={this.handleSubmit} id="generateEncryptionKeyForm">
                     <Form.Group className="mb-6">
                         <Row>
-                            <Col><Form.Label>Pincode: </Form.Label></Col>
-                            <Col><Form.Control required placeholder="Enter a code for encryption" value={this.state.pincode} onChange={this.handlePincodeInput}></Form.Control></Col>
+                            <Col><Form.Control required placeholder="Enter a code for encryption" name="pincode" value={this.state.pincode} onChange={this.handleChange}></Form.Control></Col>
                         </Row><br/>
                         <Row>
                             <Col><Button variant="outline-primary" size="sm" type="submit">Generate & Encrypt</Button></Col>
                         </Row><br/>
                         <Row>
                             <Col>{this.state.isSubmitting && ( <Spinner animation="grow" element="generateEncryptionKeyForm"></Spinner> )}</Col>
+                        </Row>
+                        <Row>
+                            <Col><Form.Label>{ this.state.responseMessage }</Form.Label></Col>
                         </Row>
                     </Form.Group>
                 </Form>

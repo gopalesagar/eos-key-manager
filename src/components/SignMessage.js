@@ -15,7 +15,6 @@ class SignMessage extends Component {
     render() {
         return (
             <div>
-                <h1>Generate Keys</h1>
                 <SignMessageForm publicKeys={this.getPublicKeys()} />
             </div>
         )

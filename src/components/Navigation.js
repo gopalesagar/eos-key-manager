@@ -1,17 +1,18 @@
 import React from 'react';
-import Nav from 'react-bootstrap/Nav';
+import { Nav } from 'react-bootstrap';
 
 const Navigation = () => {
     return (
-        <Nav className="justify-content-center" activeKey="/">
+
+        <Nav justify activeKey="/">
             <Nav.Item>
-                <Nav.Link href="/">Home</Nav.Link>
+                <h4><Nav.Link href="/">Home</Nav.Link></h4>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/sign">Sign Message</Nav.Link>
+                <h4><Nav.Link href="/sign">Sign Message</Nav.Link></h4>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="/recover">Recover Public Key</Nav.Link>
+                <h4><Nav.Link href="/recover">Recover Public Key</Nav.Link></h4>
             </Nav.Item>
         </Nav>
     );

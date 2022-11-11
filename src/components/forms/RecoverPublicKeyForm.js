@@ -37,7 +37,6 @@ class RecoverPublicKeyForm extends Component {
             event.preventDefault();
             const publicKey = await recoverPublicKey(this.state.signature, this.state.message);
             this.setState({ responseMessage: `Recovered public key is ${publicKey}`});
-            await this.toggleLoader();
         } catch (error) {
             this.setState({ responseMessage: error.message});
         } finally {

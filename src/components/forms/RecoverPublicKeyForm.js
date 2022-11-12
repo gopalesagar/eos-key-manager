@@ -1,8 +1,6 @@
-
-
 import React, { Component } from "react";
 import { Button, Container, Form, Spinner, Row, Col } from 'react-bootstrap';
-import { recoverPublicKey } from '../../utils';
+import KeyManagementUtils from '../../utils/KeyManagementUtils';
 
 class RecoverPublicKeyForm extends Component {
 
@@ -35,7 +33,7 @@ class RecoverPublicKeyForm extends Component {
         try {
             await this.toggleLoader();
             event.preventDefault();
-            const publicKey = await recoverPublicKey(this.state.signature, this.state.message);
+            const publicKey = await KeyManagementUtils.recoverPublicKey(this.state.signature, this.state.message);
             this.setState({ responseMessage: `Recovered public key is ${publicKey}`});
         } catch (error) {
             this.setState({ responseMessage: error.message});

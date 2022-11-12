@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Button, Container, Form, Spinner, Row, Col } from 'react-bootstrap';
-import { getStoredData, getDecrypted, signMessage } from '../../utils';
+import KeyManagementUtils from '../../utils/KeyManagementUtils';
+import EncryptionUtils from '../../utils/EncryptionUtils';
+import DataStorageUtils from '../../utils/DataStorageUtils';
 
 class SignMessageForm extends Component {
 
@@ -36,10 +38,10 @@ class SignMessageForm extends Component {
             event.preventDefault();
             
             const decryptionPromises = [];
-            const encryptedKeyPairs = getStoredData('object');
+            const encryptedKeyPairs = DataStorageUtils.getStoredData('object');
 
             Object.entries(encryptedKeyPairs).forEach(ekp => {
-                decryptionPromises.push(getDecrypted(ekp[0], ekp[1], this.state.pincode));
+                decryptionPromises.push(EncryptionUtils.getDecrypted(ekp[0], ekp[1], this.state.pincode));
             });
 
             const decryptedData = await Promise.all(decryptionPromises);
@@ -51,7 +53,7 @@ class SignMessageForm extends Component {
                 if(current) privateKey = current;
             })
             
-            const signature = await signMessage(this.state.message, privateKey);
+            const signature = await KeyManagementUtils.signMessage(this.state.message, privateKey);
             this.setState({ responseMessage: `Signature:\n ${signature}`});
         } catch (error) {
             this.setState({ responseMessage: error.message});

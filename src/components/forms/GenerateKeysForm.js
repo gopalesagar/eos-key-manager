@@ -1,6 +1,9 @@
 import { Component } from "react";
 import { Button, Container, ListGroup, Form, Spinner, Row, Col } from 'react-bootstrap';
-import { constants, saveData, getEncrypted, getPublicKeyFromPrivate, generatePrivateKey, clearData } from '../../utils';
+import constants from '../../utils/Constants';
+import KeyManagementUtils from '../../utils/KeyManagementUtils';
+import EncryptionUtils from '../../utils/EncryptionUtils';
+import DataStorageUtils from '../../utils/DataStorageUtils';
 
 class GenerateKeysForm extends Component {
 
@@ -27,7 +30,7 @@ class GenerateKeysForm extends Component {
     }
 
     clearExistingData = async () => {
-        await clearData();
+        await DataStorageUtils.clearData();
         this.setState({ publicKeys: [] });
     }
 
@@ -42,15 +45,15 @@ class GenerateKeysForm extends Component {
 
             const encryptionPromises = [];
             for(let i = 1; i <= constants.NUMBER_OF_KEYS; i++) {
-                const privateKeyString = await generatePrivateKey();
-                publicKey = await getPublicKeyFromPrivate(privateKeyString);
-                encryptionPromises.push(await getEncrypted(publicKey, privateKeyString, this.state.pincode));
+                const privateKeyString = await KeyManagementUtils.generatePrivateKey();
+                publicKey = await KeyManagementUtils.getPublicKeyFromPrivate(privateKeyString);
+                encryptionPromises.push(await EncryptionUtils.getEncrypted(publicKey, privateKeyString, this.state.pincode));
                 publicKeys.push(publicKey);
             }
             const encryptedKeysResponse = await Promise.all(encryptionPromises);
 
             // TODO: Store encryptedKeysResponse somewhere
-            await saveData('object', encryptedKeysResponse);
+            await DataStorageUtils.saveData('object', encryptedKeysResponse);
             this.setState({ publicKeys, responseMessage: "Keys generated successfully!" });
         } catch (error) {
             this.setState({ responseMessage: error.message })

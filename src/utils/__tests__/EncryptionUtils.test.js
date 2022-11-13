@@ -173,68 +173,68 @@ describe('CRYPTO UTILITIES', () => {
             expect(spyOnGetKey).toHaveBeenCalledWith(TEST_SECRET);
         });
 
-        // it('should handle and throw error if createDecipheriv fails', async () => {
-        //     // given
-        //     const createHashMock = {
-        //         update: mockHashUpdate.mockReturnThis(),
-        //         digest: mockHashDigest.mockReturnValue(TEST_HASH)
-        //     };
-        //     jest.spyOn(crypto, 'createCipheriv').mockImplementationOnce(() => {throw new Error()});
-        //     const mockCreateHash = jest.spyOn(crypto, 'createHash').mockImplementationOnce(() => createHashMock);
+        it('should handle and throw error if createDecipheriv fails', async () => {
+            // given
+            const createHashMock = {
+                update: mockHashUpdate.mockReturnThis(),
+                digest: mockHashDigest.mockReturnValue(TEST_HASH)
+            };
+            jest.spyOn(crypto, 'createCipheriv').mockImplementationOnce(() => {throw new Error()});
+            const mockCreateHash = jest.spyOn(crypto, 'createHash').mockImplementationOnce(() => createHashMock);
 
-        //     const spyOnGetKey = jest.spyOn(EncryptionUtils, 'getKey');
-        //     const spyOnGetIv = jest.spyOn(EncryptionUtils, 'getIv');
-        //     const spyOngetCipheriv = jest.spyOn(EncryptionUtils, 'getCipheriv');
+            const spyOnGetKey = jest.spyOn(EncryptionUtils, 'getKey');
+            const spyOnGetIv = jest.spyOn(EncryptionUtils, 'getIv');
+            const spyOngetCipheriv = jest.spyOn(EncryptionUtils, 'getCipheriv');
 
-        //     // when
-        //     try {
-        //         await getEncrypted(TEST_PUBLIC_KEY, TEST_PRIVATE_KEY, TEST_SECRET);
-        //     } catch (error) {
-        //         // then
-        //         expect(error.message).toEqual(UNABLE_TO_ENCRYPT_ERROR);
-        //         expect(spyOngetCipheriv).toHaveBeenCalledTimes(1);
-        //         expect(spyOngetCipheriv).toHaveBeenCalledWith(TEST_SECRET);
+            // when
+            try {
+                await getEncrypted(TEST_PUBLIC_KEY, TEST_PRIVATE_KEY, TEST_SECRET);
+            } catch (error) {
+                // then
+                expect(error.message).toEqual(UNABLE_TO_ENCRYPT_ERROR);
+                expect(spyOngetCipheriv).toHaveBeenCalledTimes(1);
+                expect(spyOngetCipheriv).toHaveBeenCalledWith(TEST_SECRET);
                 
-        //         expect(spyOnGetIv).not.toHaveBeenCalled();
-        //         expect(spyOnGetKey).not.toHaveBeenCalled();
-        //         expect(mockCreateHash).not.toHaveBeenCalled();
-        //     }
-        // });
+                expect(spyOnGetIv).toHaveBeenCalledTimes(1);
+                expect(spyOnGetKey).toHaveBeenCalledTimes(1);
+                expect(mockCreateHash).toHaveBeenCalledTimes(2);
+            }
+        });
 
-        // it('should handle and throw error if cipher update fails', async () => {
-        //     // given
-        //     const cipherIvMock = {
-        //         update: mockCipherUpdate.mockImplementationOnce(() => {
-        //             throw new Error();
-        //         }),
-        //         final: mockCipherFinal.mockReturnValueOnce(TEST_ENCRYPTED_BUFFER_2)
-        //     };
-        //     const createHashMock = {
-        //         update: mockHashUpdate.mockReturnThis(),
-        //         digest: mockHashDigest.mockReturnValue(TEST_HASH)
-        //     };
-        //     const mockCreateCipheriv = jest.spyOn(crypto, 'createCipheriv').mockImplementationOnce(() => cipherIvMock);
-        //     const mockCreateHash = jest.spyOn(crypto, 'createHash').mockImplementationOnce(() => createHashMock);
+        it('should handle and throw error if cipher update fails', async () => {
+            // given
+            const cipherIvMock = {
+                update: mockCipherUpdate.mockImplementationOnce(() => {
+                    throw new Error();
+                }),
+                final: mockCipherFinal.mockReturnValueOnce(TEST_ENCRYPTED_BUFFER_2)
+            };
+            const createHashMock = {
+                update: mockHashUpdate.mockReturnThis(),
+                digest: mockHashDigest.mockReturnValue(TEST_HASH)
+            };
+            jest.spyOn(crypto, 'createCipheriv').mockImplementationOnce(() => cipherIvMock);
+            const mockCreateHash = jest.spyOn(crypto, 'createHash').mockImplementationOnce(() => createHashMock);
 
-        //     const spyOnGetKey = jest.spyOn(EncryptionUtils, 'getKey');
-        //     const spyOnGetIv = jest.spyOn(EncryptionUtils, 'getIv');
-        //     const spyOngetCipheriv = jest.spyOn(EncryptionUtils, 'getCipheriv');
+            const spyOnGetKey = jest.spyOn(EncryptionUtils, 'getKey');
+            const spyOnGetIv = jest.spyOn(EncryptionUtils, 'getIv');
+            const spyOngetCipheriv = jest.spyOn(EncryptionUtils, 'getCipheriv');
 
-        //     // when
-        //     try {
-        //         await getEncrypted(TEST_PUBLIC_KEY, TEST_PRIVATE_KEY, TEST_SECRET);
-        //     } catch (error) {
-        //         // then
-        //         expect(error.message).toEqual(UNABLE_TO_ENCRYPT_ERROR);
+            // when
+            try {
+                await getEncrypted(TEST_PUBLIC_KEY, TEST_PRIVATE_KEY, TEST_SECRET);
+            } catch (error) {
+                // then
+                expect(error.message).toEqual(UNABLE_TO_ENCRYPT_ERROR);
 
-        //         expect(spyOngetCipheriv).toHaveBeenCalledTimes(1);
-        //         expect(spyOngetCipheriv).toHaveBeenCalledWith(TEST_SECRET);
+                expect(spyOngetCipheriv).toHaveBeenCalledTimes(1);
+                expect(spyOngetCipheriv).toHaveBeenCalledWith(TEST_SECRET);
 
-        //         expect(spyOnGetIv).not.toHaveBeenCalled();
-        //         expect(spyOnGetKey).not.toHaveBeenCalled();
-        //         expect(mockCreateHash).not.toHaveBeenCalled();
-        //     }
-        // }); 
+                expect(spyOnGetIv).toHaveBeenCalledTimes(1);
+                expect(spyOnGetKey).toHaveBeenCalledTimes(1);
+                expect(mockCreateHash).toHaveBeenCalledTimes(2);
+            }
+        }); 
     });
 
     // EOS6aQEnDFaVqT6UzWEvs31iLcKYp6p53dFviVHwJFX3u4N54bTxZ: '454e4352595054494f4e5f504152545f31454e4352595054494f4e5f504152545f32'

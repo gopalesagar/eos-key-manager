@@ -14,14 +14,14 @@ class KeyManagementUtils {
         try {
             return ecc.PrivateKey.fromString(privateKeyString);
         } catch(error) {
+            console.log('ERROR: ', error.message);
             throw new Error(`Internal error!`);
         }
     }
 
     generatePrivateKey = async () => {
         try {
-            const temp = await ecc.randomKey();
-            return temp.toString();
+            return (await ecc.randomKey()).toString();
         } catch(error) {
             throw new Error(`Internal error!`);
         }
@@ -29,7 +29,8 @@ class KeyManagementUtils {
 
     signMessage = async (message, privateKeyString) => {
         try {
-            return ecc.sign(message, await this.getPrivateKeyFromString(privateKeyString));
+            const t = ecc.sign(message, await this.getPrivateKeyFromString(privateKeyString));
+            return t;
         } catch(error) {
             throw new Error(`Unable to sign message!`);
         }

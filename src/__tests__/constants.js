@@ -1,8 +1,0 @@
-
-module.exports = {
-    TEST_PRIVATE_KEY: '5Hwa1EdRiwv3MQr5ZEqVUm8GxrdYNdLZmWZ4AK4Jx3KHyQzXkoq',
-    TEST_PUBLIC_KEY: 'EOS6aQEnDFaVqT6UzWEvs31iLcKYp6p53dFviVHwJFX3u4N54bTxZ',
-    TEST_MESSAGE: 'This is a test message',
-    INTERNAL_ERROR: 'Internal error!',
-    TEST_SIGNATURE: 'SIG_K1_KfJCeyFNLZUcK2XxWrRRsmLaie3pcuW8XXsawX4mnHvEnM7HC4M87ZCtho5wjQ3DcEUtjYH8FpCDVc1HrJ58qZqVELorNL'
-}

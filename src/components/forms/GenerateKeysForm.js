@@ -4,6 +4,7 @@ import constants from '../../utils/Constants';
 import KeyManagementUtils from '../../utils/KeyManagementUtils';
 import EncryptionUtils from '../../utils/EncryptionUtils';
 import DataStorageUtils from '../../utils/DataStorageUtils';
+const { generatePrivateKey, getPublicKeyFromPrivate } = KeyManagementUtils;
 
 class GenerateKeysForm extends Component {
 
@@ -45,8 +46,8 @@ class GenerateKeysForm extends Component {
 
             const encryptionPromises = [];
             for(let i = 1; i <= constants.NUMBER_OF_KEYS; i++) {
-                const privateKeyString = await KeyManagementUtils.generatePrivateKey();
-                publicKey = await KeyManagementUtils.getPublicKeyFromPrivate(privateKeyString);
+                const privateKeyString = await generatePrivateKey();
+                publicKey = await getPublicKeyFromPrivate(privateKeyString);
                 encryptionPromises.push(await EncryptionUtils.getEncrypted(publicKey, privateKeyString, this.state.pincode));
                 publicKeys.push(publicKey);
             }
@@ -64,11 +65,11 @@ class GenerateKeysForm extends Component {
     
     render() {
         return (
-            <Container data-testid='generateKeysFormContainer' style={{ display: 'block', width: 800, padding: 100 }}>
+            <Container data-testid='generateKeysFormContainer' style={{ display: 'block', width: 800, padding: 100, wordBreak: "break-all"  }}>
                 <Form onSubmit={this.handleSubmit} id="generateEncryptionKeyForm">
                     <Form.Group className="mb-6">
                         <Row>
-                            <Col><Form.Control required placeholder="Enter a code for encryption" name="pincode" value={this.state.pincode} onChange={this.handleChange}></Form.Control></Col>
+                            <Col><Form.Control size="lg" required placeholder="Enter a code for encryption" name="pincode" type="password" value={this.state.pincode} onChange={this.handleChange}></Form.Control></Col>
                         </Row><br/>
                         <Row>
                             <Col><Button variant="outline-primary" size="sm" type="submit">Generate & Encrypt</Button></Col>

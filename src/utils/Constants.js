@@ -21,6 +21,7 @@ const constants = {
     TEST_SIGNATURE: 'SIG_K1_KfJCeyFNLZUcK2XxWrRRsmLaie3pcuW8XXsawX4mnHvEnM7HC4M87ZCtho5wjQ3DcEUtjYH8FpCDVc1HrJ58qZqVELorNL',
     UNABLE_TO_DECRYPT_ERROR: 'Unable to decrypt private key',
     ERROR_IN_ENCRYPTION_DECRYPTION: 'Error in encrypting/decrypting',
-    HASH_KEY: 'hashedIV'
+    HASH_KEY: 'hashedIV',
+    BAD_PUBLIC_KEY: 'thisisabadpublickey'
 }
 export default constants;

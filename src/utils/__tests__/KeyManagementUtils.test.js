@@ -10,7 +10,8 @@ const {
     INTERNAL_ERROR,
     UNABLE_TO_SIGN_MESSAGE_ERROR,
     UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR,
-    TEST_SIGNATURE
+    TEST_SIGNATURE,
+    BAD_PUBLIC_KEY
 } = constants;
 
 const { generatePrivateKey, signMessage, recoverPublicKey } = KeyManagementUtils;
@@ -103,12 +104,13 @@ describe('EOSJS-ECC UTILITIES', () => {
     describe('recoverPublicKey', () => {
         describe('positive', () => {
             it('should return public key when correct parameters are passed', async () => {
-                // when
+                // given
                 const mockGetStoredPublicKeys = jest.spyOn(DataStorageUtils, 'getStoredPublicKeys').mockImplementation(() => [TEST_PUBLIC_KEY]);
-                
                 jest.spyOn(ecc, 'recover').mockImplementationOnce(() => TEST_PUBLIC_KEY);
-
+                
+                // when
                 const t = await recoverPublicKey(TEST_SIGNATURE, TEST_MESSAGE);
+                
                 // then
                 expect(t).toEqual(TEST_PUBLIC_KEY);
                 expect(mockGetStoredPublicKeys).toHaveBeenCalledTimes(1);
@@ -125,6 +127,20 @@ describe('EOSJS-ECC UTILITIES', () => {
                 } catch (error) {
                     // then
                     expect(error.message).toEqual(UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR);
+                }
+            });
+
+            it('should handle and throw error when recovered public key is not existing or is incorrect', async () => {
+                // given
+                const mockGetStoredPublicKeys = jest.spyOn(DataStorageUtils, 'getStoredPublicKeys').mockImplementation(() => [BAD_PUBLIC_KEY]);
+                jest.spyOn(ecc, 'recover').mockImplementationOnce(() => TEST_PUBLIC_KEY);
+
+                try {
+                    await recoverPublicKey(TEST_SIGNATURE, TEST_MESSAGE);
+                } catch (error) {
+                    // then
+                    expect(error.message).toEqual(UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR);
+                    expect(mockGetStoredPublicKeys).toHaveBeenCalledTimes(1);
                 }
             });
         });

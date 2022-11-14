@@ -50,3 +50,4 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [@xception89](https://twitter.com/xception89) - sagarsgopale@gmail.com
 
 Project Link: [https://github.com/gopalesagar/eos-key-manager](https://github.com/gopalesagar/eos-key-manager)
+Hosted Link: [https://eos-key-manager.herokuapp.com/](https://eos-key-manager.herokuapp.com/)

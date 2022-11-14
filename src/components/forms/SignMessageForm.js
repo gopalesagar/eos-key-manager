@@ -3,6 +3,8 @@ import { Button, Container, Form, Spinner, Row, Col } from 'react-bootstrap';
 import KeyManagementUtils from '../../utils/KeyManagementUtils';
 import EncryptionUtils from '../../utils/EncryptionUtils';
 import DataStorageUtils from '../../utils/DataStorageUtils';
+import { isEmpty } from 'lodash';
+import constants from "../../utils/Constants";
 
 class SignMessageForm extends Component {
 
@@ -13,7 +15,7 @@ class SignMessageForm extends Component {
             message: '',
             isSubmitting: false,
             publicKey: '',
-            responseMessage: ''
+            responseMessage: isEmpty(this.props.publicKeys) ? constants.GENERATE_PUBLIC_KEYS_ERROR : ''
         }
     }
 

@@ -22,6 +22,7 @@ const constants = {
     UNABLE_TO_DECRYPT_ERROR: 'Unable to decrypt private key',
     ERROR_IN_ENCRYPTION_DECRYPTION: 'Error in encrypting/decrypting',
     HASH_KEY: 'hashedIV',
-    BAD_PUBLIC_KEY: 'thisisabadpublickey'
+    BAD_PUBLIC_KEY: 'thisisabadpublickey',
+    GENERATE_PUBLIC_KEYS_ERROR: 'Please generate public keys from Home page!'
 }
 export default constants;

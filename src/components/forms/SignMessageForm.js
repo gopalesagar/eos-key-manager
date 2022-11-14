@@ -46,7 +46,6 @@ class SignMessageForm extends Component {
 
             const decryptedData = await Promise.all(decryptionPromises);
             
-            //TODO: Update to logic to something better
             let privateKey = '';
             decryptedData.forEach(dd => {
                 const current = dd[this.state.publicKey]
@@ -64,7 +63,7 @@ class SignMessageForm extends Component {
     
     render() {
         return (
-            <Container style={{ display: 'block', width: 800, padding: 100, wordBreak: "break-all" }}>
+            <Container fluid="md">
                 <Form data-testid='signMessageForm' onSubmit={this.handleSubmit} id="signMessageForm">
                     <Form.Group className="mb-6">
                         <Row>

@@ -45,7 +45,7 @@ class RecoverPublicKeyForm extends Component {
     
     render() {
         return (
-            <Container style={{ display: 'block', width: 800, padding: 100, wordBreak: "break-all"  }}>
+            <Container fluid="md">
                 <Form data-testid='recoverKeyForm' onSubmit={this.handleSubmit} id="recoverPublicKeyForm">
                     <Form.Group className="mb-6">
                         <Row>

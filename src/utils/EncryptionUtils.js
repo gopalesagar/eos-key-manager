@@ -1,39 +1,49 @@
 import crypto from 'crypto';
 import constants from './Constants';
 
+const {
+    ALGORITHM_SHA256,
+    ERROR_IN_ENCRYPTION_DECRYPTION,
+    HASH_KEY,
+    ALGORITHM_AES256_CBC,
+    ENCODING_HEX,
+    UNABLE_TO_ENCRYPT_ERROR,
+    UNABLE_TO_DECRYPT_ERROR
+} = constants;
+
 class EncryptionUtils {
     getIv = async () => {
         try {
             const resizedIV = Buffer.allocUnsafe(16);
-            const iv = crypto.createHash(constants.ALGORITHM_SHA256).update(constants.HASH_KEY).digest();
+            const iv = crypto.createHash(ALGORITHM_SHA256).update(HASH_KEY).digest();
             iv.copy(resizedIV);
             return resizedIV;
         } catch (error) {
-            throw new Error(constants.ERROR_IN_ENCRYPTION_DECRYPTION);
+            throw new Error(ERROR_IN_ENCRYPTION_DECRYPTION);
         }
     }
 
     getKey = async (secret) => {
         try {
-            return crypto.createHash(constants.ALGORITHM_SHA256).update(secret).digest();
+            return crypto.createHash(ALGORITHM_SHA256).update(secret).digest();
         } catch (error) {
-            throw new Error(constants.ERROR_IN_ENCRYPTION_DECRYPTION);
+            throw new Error(ERROR_IN_ENCRYPTION_DECRYPTION);
         }
     }
 
     getCipheriv = async (secret) => {
         try {
-            return crypto.createCipheriv(constants.ALGORITHM_AES256_CBC, await this.getKey(secret), await this.getIv());
+            return crypto.createCipheriv(ALGORITHM_AES256_CBC, await this.getKey(secret), await this.getIv());
         } catch (error) {
-            throw new Error(constants.ERROR_IN_ENCRYPTION_DECRYPTION);
+            throw new Error(ERROR_IN_ENCRYPTION_DECRYPTION);
         }
     }
 
     getDecipheriv = async (secret) => {
         try {
-            return crypto.createDecipheriv(constants.ALGORITHM_AES256_CBC, await this.getKey(secret), await this.getIv());;
+            return crypto.createDecipheriv(ALGORITHM_AES256_CBC, await this.getKey(secret), await this.getIv());;
         } catch (error) {
-            throw new Error(constants.ERROR_IN_ENCRYPTION_DECRYPTION);
+            throw new Error(ERROR_IN_ENCRYPTION_DECRYPTION);
         }
     }
 
@@ -42,22 +52,21 @@ class EncryptionUtils {
             let cipher = await this.getCipheriv(secret);
             let encrypted = cipher.update(privateKey);
             encrypted = Buffer.concat([encrypted, cipher.final()]);
-            return { [publicKey]: encrypted.toString(constants.ENCODING_HEX)};
+            return { [publicKey]: encrypted.toString(ENCODING_HEX)};
         } catch (error) {
-            throw new Error(constants.UNABLE_TO_ENCRYPT_ERROR);
+            throw new Error(UNABLE_TO_ENCRYPT_ERROR);
         }
     }
 
-    //TODO: Remove constants. if not required in whole project
     getDecrypted = async (publicKey, encryptedPrivateKey, secret) => {
         try {
-            let encryptedText = Buffer.from(encryptedPrivateKey, constants.ENCODING_HEX);
+            let encryptedText = Buffer.from(encryptedPrivateKey, ENCODING_HEX);
             let decipher = await this.getDecipheriv(secret);
             let decrypted = decipher.update(encryptedText);
             decrypted = Buffer.concat([decrypted, decipher.final()]).toString();
             return { [publicKey]: decrypted};
         } catch (error) {
-            throw new Error(constants.UNABLE_TO_DECRYPT_ERROR);
+            throw new Error(UNABLE_TO_DECRYPT_ERROR);
         }
     }
 }

@@ -53,7 +53,6 @@ class GenerateKeysForm extends Component {
             }
             const encryptedKeysResponse = await Promise.all(encryptionPromises);
 
-            // TODO: Store encryptedKeysResponse somewhere
             await DataStorageUtils.saveData('object', encryptedKeysResponse);
             this.setState({ publicKeys, responseMessage: "Keys generated successfully!" });
         } catch (error) {
@@ -65,7 +64,7 @@ class GenerateKeysForm extends Component {
     
     render() {
         return (
-            <Container style={{ display: 'block', width: 800, padding: 100, wordBreak: "break-all"  }}>
+            <Container fluid="md">
                 <Form data-testid='generateEncryptionKeyForm' onSubmit={this.handleSubmit} id="generateEncryptionKeyForm">
                     <Form.Group className="mb-6">
                         <Row>

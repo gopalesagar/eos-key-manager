@@ -2,13 +2,19 @@ import ecc from 'eosjs-ecc';
 import constants from './Constants';
 import DataStorageUtils from './DataStorageUtils';
 
+const {
+    INTERNAL_ERROR,
+    UNABLE_TO_SIGN_MESSAGE_ERROR,
+    UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR
+} = constants;
+
 class KeyManagementUtils {
     
     getPublicKeyFromPrivate = async (privateKey) => {
         try {
             return ecc.PrivateKey.fromString(privateKey).toPublic().toString();
         } catch(error) {
-            throw new Error(constants.INTERNAL_ERROR);
+            throw new Error(INTERNAL_ERROR);
         }
     }
 
@@ -17,7 +23,7 @@ class KeyManagementUtils {
             return ecc.PrivateKey.fromString(privateKeyString);
         } catch(error) {
             console.log('ERROR: ', error.message);
-            throw new Error(constants.INTERNAL_ERROR);
+            throw new Error(INTERNAL_ERROR);
         }
     }
 
@@ -25,7 +31,7 @@ class KeyManagementUtils {
         try {
             return (await ecc.randomKey()).toString();
         } catch(error) {
-            throw new Error(constants.INTERNAL_ERROR);
+            throw new Error(INTERNAL_ERROR);
         }
     }
 
@@ -34,7 +40,7 @@ class KeyManagementUtils {
             const t = ecc.sign(message, await this.getPrivateKeyFromString(privateKeyString));
             return t;
         } catch(error) {
-            throw new Error(constants.UNABLE_TO_SIGN_MESSAGE_ERROR);
+            throw new Error(UNABLE_TO_SIGN_MESSAGE_ERROR);
         }
     }
 
@@ -43,11 +49,11 @@ class KeyManagementUtils {
             const publicKey = ecc.recover(signature, message);
             const storedPublicKeys = DataStorageUtils.getStoredPublicKeys();
             if(!storedPublicKeys.includes(publicKey)) {
-                throw new Error(constants.UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR);
+                throw new Error(UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR);
             }
             return publicKey;
         } catch(error) {
-            throw new Error(constants.UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR);
+            throw new Error(UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR);
         }
     }
 }

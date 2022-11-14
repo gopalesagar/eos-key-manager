@@ -21,7 +21,7 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 
-describe('EOSJS-ECC UTILITIES', () => {
+describe('KEY MANAGEMENT UTILITIES', () => {
 
     describe('signMessage', () => {
 

@@ -11,6 +11,10 @@ form {
   padding-top: 5%;
 }
 
+.nav {
+  margin: 20px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

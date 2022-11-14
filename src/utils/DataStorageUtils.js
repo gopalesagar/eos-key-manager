@@ -26,6 +26,13 @@ class DataStorageUtils {
         }
     }
 
+    getStoredPublicKeys = () => {
+        let publicKeys = [];
+        let storedData =  this.getStoredData('object');
+        if(!isEmpty(storedData)) publicKeys = Object.keys(storedData);
+        return publicKeys;
+    }
+
     clearData = async () => {
         secureLocalStorage.clear();
     }

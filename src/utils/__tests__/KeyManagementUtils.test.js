@@ -1,4 +1,5 @@
 import KeyManagementUtils from '../KeyManagementUtils';
+import DataStorageUtils from '../DataStorageUtils';
 import ecc from 'eosjs-ecc';
 import constants from '../Constants';
 
@@ -103,11 +104,14 @@ describe('EOSJS-ECC UTILITIES', () => {
         describe('positive', () => {
             it('should return public key when correct parameters are passed', async () => {
                 // when
+                const mockGetStoredPublicKeys = jest.spyOn(DataStorageUtils, 'getStoredPublicKeys').mockImplementation(() => [TEST_PUBLIC_KEY]);
+                
                 jest.spyOn(ecc, 'recover').mockImplementationOnce(() => TEST_PUBLIC_KEY);
 
                 const t = await recoverPublicKey(TEST_SIGNATURE, TEST_MESSAGE);
                 // then
                 expect(t).toEqual(TEST_PUBLIC_KEY);
+                expect(mockGetStoredPublicKeys).toHaveBeenCalledTimes(1);
             });
         });
 

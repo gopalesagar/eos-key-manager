@@ -18,7 +18,9 @@ const constants = {
     INTERNAL_ERROR: 'Internal error!',
     UNABLE_TO_SIGN_MESSAGE_ERROR: 'Unable to sign message!',
     UNABLE_TO_RECOVER_PUBLIC_KEY_ERROR: 'Unable to recover public key. Please provide correct signature & message pair.',
-    TEST_SIGNATURE: 'SIG_K1_KfJCeyFNLZUcK2XxWrRRsmLaie3pcuW8XXsawX4mnHvEnM7HC4M87ZCtho5wjQ3DcEUtjYH8FpCDVc1HrJ58qZqVELorNL'
-
+    TEST_SIGNATURE: 'SIG_K1_KfJCeyFNLZUcK2XxWrRRsmLaie3pcuW8XXsawX4mnHvEnM7HC4M87ZCtho5wjQ3DcEUtjYH8FpCDVc1HrJ58qZqVELorNL',
+    UNABLE_TO_DECRYPT_ERROR: 'Unable to decrypt private key',
+    ERROR_IN_ENCRYPTION_DECRYPTION: 'Error in encrypting/decrypting',
+    HASH_KEY: 'hashedIV'
 }
 export default constants;

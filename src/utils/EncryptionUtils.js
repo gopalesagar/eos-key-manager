@@ -1,15 +1,15 @@
 import crypto from 'crypto';
-import constants from '../utils/Constants';
+import constants from './Constants';
 
 class EncryptionUtils {
     getIv = async () => {
         try {
             const resizedIV = Buffer.allocUnsafe(16);
-            const iv = crypto.createHash(constants.ALGORITHM_SHA256).update('hashedIV').digest();
+            const iv = crypto.createHash(constants.ALGORITHM_SHA256).update(constants.HASH_KEY).digest();
             iv.copy(resizedIV);
             return resizedIV;
         } catch (error) {
-            throw new Error(`Error in encrypting/decrypting`);
+            throw new Error(constants.ERROR_IN_ENCRYPTION_DECRYPTION);
         }
     }
 
@@ -17,7 +17,7 @@ class EncryptionUtils {
         try {
             return crypto.createHash(constants.ALGORITHM_SHA256).update(secret).digest();
         } catch (error) {
-            throw new Error(`Error in encrypting/decrypting`);
+            throw new Error(constants.ERROR_IN_ENCRYPTION_DECRYPTION);
         }
     }
 
@@ -25,7 +25,7 @@ class EncryptionUtils {
         try {
             return crypto.createCipheriv(constants.ALGORITHM_AES256_CBC, await this.getKey(secret), await this.getIv());
         } catch (error) {
-            throw new Error(`Error in encrypting/decrypting`);
+            throw new Error(constants.ERROR_IN_ENCRYPTION_DECRYPTION);
         }
     }
 
@@ -33,7 +33,7 @@ class EncryptionUtils {
         try {
             return crypto.createDecipheriv(constants.ALGORITHM_AES256_CBC, await this.getKey(secret), await this.getIv());;
         } catch (error) {
-            throw new Error(`Error in encrypting/decrypting`);
+            throw new Error(constants.ERROR_IN_ENCRYPTION_DECRYPTION);
         }
     }
 
@@ -44,7 +44,7 @@ class EncryptionUtils {
             encrypted = Buffer.concat([encrypted, cipher.final()]);
             return { [publicKey]: encrypted.toString(constants.ENCODING_HEX)};
         } catch (error) {
-            throw new Error(`Unable to encrypt private key. Please check the pincode.`);
+            throw new Error(constants.UNABLE_TO_ENCRYPT_ERROR);
         }
     }
 
@@ -57,7 +57,7 @@ class EncryptionUtils {
             decrypted = Buffer.concat([decrypted, decipher.final()]).toString();
             return { [publicKey]: decrypted};
         } catch (error) {
-            throw new Error(`Unable to decrypt private key!`);
+            throw new Error(constants.UNABLE_TO_DECRYPT_ERROR);
         }
     }
 }

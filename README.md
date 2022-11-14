@@ -23,6 +23,8 @@ The main functionality of this app is to demonstrate generation of public/privat
 Unit tests are in place for the utilities to encrypt, sign and recover key and can be ran using
 ```npm test```
 
+The test cases for frontend are minimal and check only rendering of components.
+
 ### 
 
 ## Getting Started

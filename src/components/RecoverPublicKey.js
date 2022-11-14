@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { Component } from "react";
 import RecoverPublicKeyForm from './forms/RecoverPublicKeyForm';
 
-const RecoverPublicKey = () => {
-    return (
-       <div>
-          <RecoverPublicKeyForm />
-       </div>
-    );
+class RecoverPublicKey extends Component {
+
+   render() {
+       return (
+           <div>
+               <RecoverPublicKeyForm />
+           </div>
+       )
+   };
 }
- 
+
 export default RecoverPublicKey;

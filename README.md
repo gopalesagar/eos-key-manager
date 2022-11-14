@@ -6,7 +6,7 @@ The main functionality of this app is to demonstrate generation of public/privat
         * Secret/pincode
     * Generates 5 keys pairs and encrypts the private keys using NodeJs core module [crypto](https://nodejs.org/api/crypto.html)
     * The public and encrypted private key mappings are stored in local storage with one more level of encryption
-    * The extra level of encryption is taken care by [react-secure-storage](https://github.com/sushinpv/react-secure-storage)
+    * The extra level of encryption is taken care by [react-secure-storage](https://github.com/sushinpv/react-secure-storage). This ensures that the encrypted store can be utilized by that browser only. We can also use file system to download keys and but to avoid overhead of file processing local storage was used.
 * Sign Message:
     * Inputs:
         * Message to be encrypted

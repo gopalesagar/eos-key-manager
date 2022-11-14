@@ -46,17 +46,17 @@ class RecoverPublicKeyForm extends Component {
     render() {
         return (
             <Container style={{ display: 'block', width: 800, padding: 100, wordBreak: "break-all"  }}>
-                <Form onSubmit={this.handleSubmit} id="recoverPublicKeyForm">
+                <Form data-testid='recoverKeyForm' onSubmit={this.handleSubmit} id="recoverPublicKeyForm">
                     <Form.Group className="mb-6">
                         <Row>
-                            <Col><Form.Control size="lg" type="text" name="message" id="message" value={this.state.message} onChange={this.handleChange} required placeholder="Enter message" aria-describedby="messageTextArea"/>
+                            <Col><Form.Control data-testid='messageInput' size="lg" type="text" name="message" id="message" value={this.state.message} onChange={this.handleChange} required placeholder="Enter message" aria-describedby="messageTextArea"/>
                             <Form.Text id="messageTextArea" muted></Form.Text></Col>
                         </Row><br/>
                         <Row>
-                            <Col><Form.Control size="lg" required placeholder="Enter the signature" name="signature" value={this.state.signature} onChange={this.handleChange}></Form.Control></Col>
+                            <Col><Form.Control data-testid='signatureInput' size="lg" required placeholder="Enter the signature" name="signature" value={this.state.signature} onChange={this.handleChange}></Form.Control></Col>
                         </Row><br/>
                         <Row>
-                            <Col><Button variant="outline-primary" size="sm" type="submit">Recover</Button></Col>
+                            <Col><Button data-testid='submitButton' variant="outline-primary" size="sm" type="submit">Recover</Button></Col>
                         </Row><br/>
                         <Row>
                             <Col>{this.state.isSubmitting && ( <Spinner animation="grow" element="recoverPublicKeyForm"></Spinner> )}</Col>

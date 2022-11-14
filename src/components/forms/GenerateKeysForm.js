@@ -65,14 +65,14 @@ class GenerateKeysForm extends Component {
     
     render() {
         return (
-            <Container data-testid='generateKeysFormContainer' style={{ display: 'block', width: 800, padding: 100, wordBreak: "break-all"  }}>
-                <Form onSubmit={this.handleSubmit} id="generateEncryptionKeyForm">
+            <Container style={{ display: 'block', width: 800, padding: 100, wordBreak: "break-all"  }}>
+                <Form data-testid='generateEncryptionKeyForm' onSubmit={this.handleSubmit} id="generateEncryptionKeyForm">
                     <Form.Group className="mb-6">
                         <Row>
-                            <Col><Form.Control size="lg" required placeholder="Enter a code for encryption" name="pincode" type="password" value={this.state.pincode} onChange={this.handleChange}></Form.Control></Col>
+                            <Col><Form.Control data-testid='pincodeInput' size="lg" required placeholder="Enter a code for encryption" name="pincode" type="password" value={this.state.pincode} onChange={this.handleChange}></Form.Control></Col>
                         </Row><br/>
                         <Row>
-                            <Col><Button variant="outline-primary" size="sm" type="submit">Generate & Encrypt</Button></Col>
+                            <Col><Button data-testid='submitButton' variant="outline-primary" size="sm" type="submit">Generate & Encrypt</Button></Col>
                         </Row><br/>
                         <Row>
                             <Col>{this.state.isSubmitting && ( <Spinner animation="grow" element="generateEncryptionKeyForm"></Spinner> )}</Col>

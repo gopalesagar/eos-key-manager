@@ -1,15 +1,7 @@
-import secureLocalStorage from 'react-secure-storage';
 import { isEmpty } from 'lodash';
+import secureLocalStorage from 'react-secure-storage';
 
 class DataStorageUtils {
-
-    getStoredData = (type) => {
-        try {
-            return secureLocalStorage.getItem(type);
-        } catch(error) {
-            throw new Error(`Error in fetching stored data`);
-        }
-    }
 
     saveData = async (type, data) => {
         try {
@@ -21,7 +13,16 @@ class DataStorageUtils {
             }
             secureLocalStorage.setItem(type, isEmpty(mergedObject) ? data : mergedObject);
         } catch(error) {
+            console.log('ERROR', error.message);
             throw new Error(`Error in saving data`);
+        }
+    }
+
+    getStoredData = (type) => {
+        try {
+            return secureLocalStorage.getItem(type);
+        } catch(error) {
+            throw new Error(`Error in fetching stored data`);
         }
     }
 

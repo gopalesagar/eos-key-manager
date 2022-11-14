@@ -9,7 +9,6 @@ class EncryptionUtils {
             iv.copy(resizedIV);
             return resizedIV;
         } catch (error) {
-            console.log('ERROR getIv', error.message);
             throw new Error(`Error in encrypting/decrypting`);
         }
     }
@@ -18,7 +17,6 @@ class EncryptionUtils {
         try {
             return crypto.createHash(constants.ALGORITHM_SHA256).update(secret).digest();
         } catch (error) {
-            console.log('ERROR getKey', error.message);
             throw new Error(`Error in encrypting/decrypting`);
         }
     }
@@ -27,7 +25,6 @@ class EncryptionUtils {
         try {
             return crypto.createCipheriv(constants.ALGORITHM_AES256_CBC, await this.getKey(secret), await this.getIv());
         } catch (error) {
-            console.log('ERROR getCipheriv', error.message);
             throw new Error(`Error in encrypting/decrypting`);
         }
     }
@@ -35,8 +32,7 @@ class EncryptionUtils {
     getDecipheriv = async (secret) => {
         try {
             return crypto.createDecipheriv(constants.ALGORITHM_AES256_CBC, await this.getKey(secret), await this.getIv());;
-        } catch {
-            console.log('ERROR getDecipheriv', error.message);
+        } catch (error) {
             throw new Error(`Error in encrypting/decrypting`);
         }
     }
@@ -44,14 +40,10 @@ class EncryptionUtils {
     getEncrypted = async (publicKey, privateKey, secret) => {
         try {
             let cipher = await this.getCipheriv(secret);
-            console.log('TEST1');
             let encrypted = cipher.update(privateKey);
-            console.log('TEST2');
             encrypted = Buffer.concat([encrypted, cipher.final()]);
-            console.log('TEST3');
             return { [publicKey]: encrypted.toString(constants.ENCODING_HEX)};
         } catch (error) {
-            console.log('ERROR ', error.message)
             throw new Error(`Unable to encrypt private key. Please check the pincode.`);
         }
     }

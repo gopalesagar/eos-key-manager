@@ -65,25 +65,25 @@ class SignMessageForm extends Component {
     render() {
         return (
             <Container style={{ display: 'block', width: 800, padding: 100, wordBreak: "break-all" }}>
-                <Form onSubmit={this.handleSubmit} id="signMessageForm">
+                <Form data-testid='signMessageForm' onSubmit={this.handleSubmit} id="signMessageForm">
                     <Form.Group className="mb-6">
                         <Row>
-                            <Col><Form.Control size="lg" type="text" id="message" name="message" value={this.state.message} onChange={this.handleChange} required placeholder="Enter a message to sign" aria-describedby="messageTextArea"/>
+                            <Col><Form.Control data-testid='messageInput' size="lg" type="text" id="message" name="message" value={this.state.message} onChange={this.handleChange} required placeholder="Enter a message to sign" aria-describedby="messageTextArea"/>
                             <Form.Text id="messageTextArea" muted></Form.Text></Col>
                         </Row><br/>
                         <Row>
                             <Col>
-                                <Form.Select size="lg" onChange={this.handlePublicKeyOnChange} required aria-label="Default select example">
+                                <Form.Select data-testid='publicKeySelect' size="lg" onChange={this.handlePublicKeyOnChange} required aria-label="Default select example">
                                     <option value="">Select Public Key</option>
                                     { this.props.publicKeys.map(pk => <option key={pk} value={pk}>{pk}</option>) }
                                 </Form.Select>
                             </Col>
                         </Row><br/>
                         <Row>
-                            <Col><Form.Control size="lg"required placeholder="Enter a code for decryption" name="pincode" type="password" value={this.state.pincode} onChange={this.handleChange}></Form.Control></Col>
+                            <Col><Form.Control data-testid='pincodeInput' size="lg"required placeholder="Enter a code for decryption" name="pincode" type="password" value={this.state.pincode} onChange={this.handleChange}></Form.Control></Col>
                         </Row><br/>
                         <Row>
-                            <Col><Button variant="outline-primary" size="sm" type="submit">Sign Message</Button></Col>
+                            <Col><Button data-testid='submitButton' variant="outline-primary" size="sm" type="submit">Sign Message</Button></Col>
                         </Row><br/>
                         <Row>
                             <Col>{this.state.isSubmitting && ( <Spinner animation="grow" element="signMessageForm"></Spinner> )}</Col>
